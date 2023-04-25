@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
-using StableDiffusionSdk.DomainModels;
-using StableDiffusionSdk.Integrations.OpenAiGptApi;
-using StableDiffusionSdk.Jobs.Interrogators;
+﻿using StableDiffusionSdk.Integrations.OpenAiGptApi;
 
-namespace StableDiffusionSdk.Jobs.Prompters
+namespace StableDiffusionSdk.Modules.Prompts
 {
     public static class GptPrompterWithInterrogation
     {

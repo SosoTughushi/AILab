@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StableDiffusionSdk.DomainModels;
-using StableDiffusionSdk.Infrastructure;
+﻿
+using StableDiffusionSdk.Integrations.StableDiffusionWebUiApi;
 using StableDiffusionSdk.Jobs;
-using StableDiffusionSdk.Jobs.Image;
+using StableDiffusionSdk.Modules.Images;
 
 namespace StableDiffusionSdk.Workflows
 {
     public static class StretchWorkflow
     {
-        public static async Task Run(StableDiffusionApi.StableDiffusionApi stableDiffusionApi, string file)
+        public static async Task Run(StableDiffusionApi stableDiffusionApi, string file)
         {
             var persister =
                 new ImagePersister(Path.Combine(Path.GetDirectoryName(file)!,

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StableDiffusionSdk.DomainModels;
 
-namespace StableDiffusionSdk.Jobs.Image
+namespace StableDiffusionSdk.Modules.Images
 {
     public static class ImageExtensions
     {
@@ -31,8 +30,8 @@ namespace StableDiffusionSdk.Jobs.Image
                 width = (int)(height * aspectRatio);
             }
 
-            width = (width / 64) * 64;
-            height = (height / 64) * 64;
+            width = width / 64 * 64;
+            height = height / 64 * 64;
 
             return Task.FromResult(inputImage with { Height = height, Width = width });
         }

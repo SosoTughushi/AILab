@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
-using StableDiffusionSdk.DomainModels;
+using StableDiffusionSdk.Modules.Images;
 using Color = System.Drawing.Color;
 using Rectangle = System.Drawing.Rectangle;
 
-public static class ChangeRgbImage
+public static class ChangeRgb
 {
 
     public static async Task<ImageDomainModel> AdjustRgb(this ImageDomainModel image, double targetRed, double targetGreen, double targetBlue)

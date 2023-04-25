@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using StableDiffusionSdk.DomainModels;
+using StableDiffusionSdk.Modules.Images;
 using SD = System.Drawing;
 public static class RotateImageExtensions
 {

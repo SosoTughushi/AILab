@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StableDiffusionSdk.DomainModels;
-using StableDiffusionSdk.Integrations.OpenAiGptApi;
+﻿using StableDiffusionSdk.Integrations.OpenAiGptApi;
+using StableDiffusionSdk.Jobs;
+using StableDiffusionSdk.Modules.Images;
 
-namespace StableDiffusionSdk.Jobs.Prompters
+namespace StableDiffusionSdk.Modules.Prompts
 {
     public class GptPrompter : IJob<(ImageDomainModel, string), string>
     {

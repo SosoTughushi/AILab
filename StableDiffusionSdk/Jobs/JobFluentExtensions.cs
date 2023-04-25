@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using StableDiffusionSdk.Workflows;
-
-namespace StableDiffusionSdk.Jobs
+﻿namespace StableDiffusionSdk.Jobs
 {
     public static class JobFluentExtensions
     {

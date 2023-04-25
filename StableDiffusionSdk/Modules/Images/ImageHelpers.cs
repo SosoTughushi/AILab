@@ -1,7 +1,6 @@
 ﻿using SixLabors.ImageSharp.Formats.Jpeg;
-using StableDiffusionSdk.DomainModels;
 
-namespace StableDiffusionSdk.Infrastructure;
+namespace StableDiffusionSdk.Modules.Images;
 
 public static class ImageHelpers
 {

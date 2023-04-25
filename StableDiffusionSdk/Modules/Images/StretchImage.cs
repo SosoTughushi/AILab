@@ -5,9 +5,8 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StableDiffusionSdk.DomainModels;
 
-namespace StableDiffusionSdk.Jobs.Image
+namespace StableDiffusionSdk.Modules.Images
 {
     public static class StretchImageExtensions
     {
@@ -15,8 +14,8 @@ namespace StableDiffusionSdk.Jobs.Image
         {
             using var originalImage = image.ToSystemDrawingImage();
 
-            var newWidth = originalImage.Width + (int)(originalImage.Width * direction.DeltaX / 100);
-            var newHeight = originalImage.Height + (int)(originalImage.Height * direction.DeltaY / 100);
+            var newWidth = originalImage.Width + originalImage.Width * direction.DeltaX / 100;
+            var newHeight = originalImage.Height + originalImage.Height * direction.DeltaY / 100;
 
             using var stretchedImage = new Bitmap(newWidth, newHeight, originalImage.PixelFormat);
             using (var g = Graphics.FromImage(stretchedImage))

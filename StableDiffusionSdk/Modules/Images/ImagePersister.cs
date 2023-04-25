@@ -1,7 +1,4 @@
-﻿using StableDiffusionSdk.DomainModels;
-using StableDiffusionSdk.Infrastructure;
-
-namespace StableDiffusionSdk.Jobs.Image
+﻿namespace StableDiffusionSdk.Modules.Images
 {
     public class ImagePersister
     {

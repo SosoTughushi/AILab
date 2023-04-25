@@ -1,16 +1,9 @@
-﻿using StableDiffusionSdk.Integrations.StableDiffusionWebUiApi;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
+using StableDiffusionSdk.Modules.Images;
 
-namespace StableDiffusionSdk.StableDiffusionApi
+namespace StableDiffusionSdk.Integrations.StableDiffusionWebUiApi
 {
-    using System.Net.Http;
-    using System.Net.Http.Json;
-    using System.Text.Json;
-    using System.Threading.Tasks;
-    using System;
-    using SixLabors.ImageSharp;
-    using SixLabors.ImageSharp.PixelFormats;
-    using StableDiffusionSdk.DomainModels;
-
     public class StableDiffusionApi
     {
         private readonly HttpClient _httpClient;

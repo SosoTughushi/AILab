@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
-using StableDiffusionSdk.DomainModels;
 using StableDiffusionSdk.Infrastructure;
 using StableDiffusionSdk.Integrations.OpenAiGptApi;
+using StableDiffusionSdk.Integrations.StableDiffusionWebUiApi;
 using StableDiffusionSdk.Jobs;
-using StableDiffusionSdk.Jobs.Image;
-using StableDiffusionSdk.Jobs.Interrogators;
-using StableDiffusionSdk.Jobs.Prompters;
-using StableDiffusionSdk.StableDiffusionApi;
+using StableDiffusionSdk.Modules.Images;
+using StableDiffusionSdk.Modules.Prompts;
 using StableDiffusionSdk.Workflows;
 
 // Read configuration from appsettings.json, appsettings.local.json, and environment variables

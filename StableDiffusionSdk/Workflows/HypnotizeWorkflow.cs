@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StableDiffusionSdk.DomainModels;
-using StableDiffusionSdk.Infrastructure;
-using StableDiffusionSdk.Integrations.OpenAiGptApi;
+﻿using StableDiffusionSdk.Integrations.OpenAiGptApi;
+using StableDiffusionSdk.Integrations.StableDiffusionWebUiApi;
 using StableDiffusionSdk.Jobs;
-using StableDiffusionSdk.Jobs.Image;
-using StableDiffusionSdk.Jobs.Prompters;
+using StableDiffusionSdk.Modules.Images;
+using StableDiffusionSdk.Modules.Prompts;
 
 namespace StableDiffusionSdk.Workflows
 {
     public static class HypnotizeWorkflow
     {
-        public static async Task Run(StableDiffusionApi.StableDiffusionApi stableDiffusionApi, GptApi gptApi,
+        public static async Task Run(StableDiffusionApi stableDiffusionApi, GptApi gptApi,
             ImagePersister globalPersister)
         {
             async Task<string> CreatePrompt(ImageDomainModel image)

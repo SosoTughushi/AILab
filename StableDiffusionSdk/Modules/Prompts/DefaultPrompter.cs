@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StableDiffusionSdk.DomainModels;
+﻿using StableDiffusionSdk.Jobs;
+using StableDiffusionSdk.Modules.Images;
 
-namespace StableDiffusionSdk.Jobs.Prompters
+namespace StableDiffusionSdk.Modules.Prompts
 {
     public class DefaultPrompter : IJob<(ImageDomainModel, string), string>
     {

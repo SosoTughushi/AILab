@@ -2,7 +2,7 @@
 {
     public class Img2ImageApiResponse
     {
-        public string[] images { get; set; }
+        public string[] images { get; set; } = null!;
 
     }
     public class Img2ImgApiRequest

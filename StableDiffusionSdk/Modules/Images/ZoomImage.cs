@@ -1,8 +1,7 @@
 ﻿using System.Drawing;
-using StableDiffusionSdk.DomainModels;
 using Color = System.Drawing.Color;
 
-namespace StableDiffusionSdk.Jobs.Image;
+namespace StableDiffusionSdk.Modules.Images;
 
 public static class ZoomDirectionBuilder
 {
@@ -92,8 +91,8 @@ public static class ZoomImageExtensions
                 var newWidth = (int)(previousRectangle.Width / (zoomPercent / 100));
                 var newHeight = (int)(previousRectangle.Height / (zoomPercent / 100));
 
-                var offsetX = (previousRectangle.Width - newWidth) * 0.5 * (1 + ((double)direction.DeltaX) / 100);
-                var offsetY = (previousRectangle.Height - newHeight) * 0.5 * (1 + ((double)direction.DeltaY) / 100);
+                var offsetX = (previousRectangle.Width - newWidth) * 0.5 * (1 + (double)direction.DeltaX / 100);
+                var offsetY = (previousRectangle.Height - newHeight) * 0.5 * (1 + (double)direction.DeltaY / 100);
 
                 var x = previousRectangle.Left + offsetX;
                 var y = previousRectangle.Top + offsetY;
@@ -130,8 +129,8 @@ public static class ZoomImageExtensions
         double newWidth = originalImage.Width * scaleFactor;
         double newHeight = originalImage.Height * scaleFactor;
 
-        double offsetX = (zoomedImage.Width - newWidth) * 0.5 * (1 + ((double)direction.DeltaX) / 100);
-        double offsetY = (zoomedImage.Height - newHeight) * 0.5 * (1 + ((double)direction.DeltaY) / 100);
+        double offsetX = (zoomedImage.Width - newWidth) * 0.5 * (1 + (double)direction.DeltaX / 100);
+        double offsetY = (zoomedImage.Height - newHeight) * 0.5 * (1 + (double)direction.DeltaY / 100);
 
         return new System.Drawing.Rectangle((int)offsetX, (int)offsetY, (int)newWidth, (int)newHeight);
     }

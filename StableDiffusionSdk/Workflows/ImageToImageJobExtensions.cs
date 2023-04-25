@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StableDiffusionSdk.DomainModels;
-using StableDiffusionSdk.Infrastructure;
-using StableDiffusionSdk.Jobs;
-using StableDiffusionSdk.Jobs.Image;
+﻿using StableDiffusionSdk.Jobs;
+using StableDiffusionSdk.Modules.Images;
 
 namespace StableDiffusionSdk.Workflows
 {
