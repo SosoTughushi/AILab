@@ -13,9 +13,23 @@ namespace StableDiffusionSdk.Integrations.StableDiffusionWebUiApi
         string? NegativePrompt = null,
         bool RestoreFaces = false
     );
+
+    public record Text2ImgRequest
+    (
+        string Prompt,
+        Seed Seed,
+        int Width,
+        int Height,
+        double CfgScale = 7,
+        int Steps = 20,
+        string? NegativePrompt = null,
+        bool RestoreFaces = false
+    );
+
+
     public record Seed(int Value)
     {
-        public static Seed Random() => new Seed(new Random().Next());
+        public static Seed Random() => new(new Random().Next());
     }
 
     public enum InterrogationModel

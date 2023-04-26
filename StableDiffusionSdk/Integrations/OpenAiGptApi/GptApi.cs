@@ -18,7 +18,13 @@ namespace StableDiffusionSdk.Integrations.OpenAiGptApi
                 BaseDomain = apiUrl
             };
 
-            _openAiService = new OpenAIService(options);
+            var httpClientHandler = new HttpClientHandler();
+            var httpClient = new HttpClient(httpClientHandler)
+            {
+                Timeout = TimeSpan.FromSeconds(200)
+            };
+
+            _openAiService = new OpenAIService(options, httpClient);
         }
 
         public async Task<string> GenerateTextAsync(string prompt)

@@ -40,6 +40,31 @@ namespace StableDiffusionSdk.Integrations.StableDiffusionWebUiApi
             return new ImageDomainModel(base64String, image.Width, image.Height);
         }
 
+        public async Task<ImageDomainModel> TextToImage(Text2ImgRequest request)
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            var apiRequest = CreateText2ImageApiRequestModel(request);
+
+            var response = await _httpClient.PostAsJsonAsync($"{_apiUrl}/sdapi/v1/txt2img", apiRequest, options);
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            response.EnsureSuccessStatusCode();
+
+            var txt2ImgResponse = JsonSerializer.Deserialize<Text2ImageApiResponse>(jsonResponse, options)!;
+
+            var base64String = txt2ImgResponse.images.First();
+            var imageBytes = Convert.FromBase64String(base64String);
+
+            using var image = Image.Load<Rgba32>(imageBytes);
+
+            return new ImageDomainModel(base64String, image.Width, image.Height);
+        }
+
         public async Task<string> Interrogate(InterrogateRequest req)
         {
             var request = new InterrogateApiRequest(req.InputImage.ContentAsBase64String, 
@@ -82,6 +107,22 @@ namespace StableDiffusionSdk.Integrations.StableDiffusionWebUiApi
 
                 Sampler_name = "Euler a",
                 Resize_mode = 1,
+            };
+        }
+
+        public Text2ImageApiRequest CreateText2ImageApiRequestModel(Text2ImgRequest request)
+        {
+            return new Text2ImageApiRequest()
+            {
+                Prompt = request.Prompt,
+                Width = request.Width,
+                Height = request.Height,
+                Steps = request.Steps,
+                Cfg_scale = request.CfgScale,
+                Seed = request.Seed.Value,
+                Negative_prompt = request.NegativePrompt,
+                Restore_faces = request.RestoreFaces
+                // Add any other properties you need
             };
         }
     }

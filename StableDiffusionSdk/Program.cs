@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
+using StableDiffusionSdk.Infrastructure;
 using StableDiffusionSdk.Integrations.OpenAiGptApi;
 using StableDiffusionSdk.Integrations.StableDiffusionWebUiApi;
 using StableDiffusionSdk.Modules.Images;
+using StableDiffusionSdk.Modules.Prompts;
 using StableDiffusionSdk.Workflows;
 
 // Read configuration from appsettings.json, appsettings.local.json, and environment variables
@@ -23,11 +25,3 @@ var stableDiffusionUrl = configuration["StableDiffusionUrl"]!;
 var stableDiffusionApi = new StableDiffusionApi(stableDiffusionUrl);
 
 
-//foreach (var file in Directory.EnumerateFiles(@"D:\Stable Diffusion\Recursive\NIghtJob"))
-    for (var i = 0; i < 5; i++)
-    {
-        var path = @"D:\Stable Diffusion\Recursive\NIghtJob\bored.jpg";
-        var smoothZoomInWorkflow = new SmoothZoomInWorkflow(stableDiffusionApi, gptApi);
-
-        await smoothZoomInWorkflow.Run(path, ImageResolution._1408, 120);
-    }
