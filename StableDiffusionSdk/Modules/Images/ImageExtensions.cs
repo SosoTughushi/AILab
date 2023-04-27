@@ -8,9 +8,9 @@ namespace StableDiffusionSdk.Modules.Images
 {
     public static class ImageExtensions
     {
-        public static ImageDomainModel Resize(this ImageDomainModel image, int width, int height)
+        public static Task<ImageDomainModel> Resize(this ImageDomainModel image, int width, int height)
         {
-            return image with { Width = width, Height = height };
+            return Task.FromResult(image with { Width = width, Height = height });
         }
 
         public static Task<ImageDomainModel> Resize(this ImageDomainModel inputImage, int maxDimension)
