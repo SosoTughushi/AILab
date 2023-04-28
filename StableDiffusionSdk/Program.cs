@@ -22,6 +22,6 @@ var stableDiffusionUrl = configuration["StableDiffusionUrl"]!;
 // Create a new instance of StableDiffusionApi using the retrieved URL
 var stableDiffusionApi = new StableDiffusionApi(stableDiffusionUrl);
 
-var videoToImages = new VideoToVideoWorkflow(stableDiffusionApi);
+var videoToImages = new VideoToVideoWorkflow(stableDiffusionApi, gptApi);
 
-await videoToImages.Run(@"C:\Users\TomTo\Downloads\DJI_0405.mp4", "Frames", 3);
+await videoToImages.Run(@"D:\Drone Footage\fshavi\DJI_0417.MP4", "Grinder", 10);
