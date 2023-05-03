@@ -2,12 +2,13 @@
 using StableDiffusionSdk.Integrations.StableDiffusionWebUiApi;
 using StableDiffusionSdk.Jobs;
 using StableDiffusionSdk.Modules.Images;
+using StableDiffusionSdk.Prompts;
 
 namespace StableDiffusionSdk.Workflows
 {
     public static class StretchWorkflow
     {
-        public static async Task Run(StableDiffusionApi stableDiffusionApi, string file)
+        public static async Task Run(StableDiffusionApi stableDiffusionApi, string file, IPrompter prompter)
         {
             var persister =
                 new ImagePersister(Path.Combine(Path.GetDirectoryName(file)!,
@@ -15,14 +16,13 @@ namespace StableDiffusionSdk.Workflows
 
             var rgbRegulator = new RgbRegulator();
             var direction = new StretchDirection(10, 0);
-            var prompt = "man with kaleidoscope glasses, marioalberti artstyle";
 
             var img2ImgJob = DynamicJob.Create(async (ImageDomainModel image) =>
                 {
                     var result = await stableDiffusionApi.ImageToImage(
                         new Img2ImgRequest(
                             InputImage: image,
-                            Prompt: prompt,
+                            Prompt: await prompter.GetPrompt(image),
                             DenoisingStrength: 0.3,
                             Seed.Random(),
                             NegativePrompt: string.Empty)

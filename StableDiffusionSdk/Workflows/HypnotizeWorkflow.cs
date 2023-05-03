@@ -3,36 +3,15 @@ using StableDiffusionSdk.Integrations.StableDiffusionWebUiApi;
 using StableDiffusionSdk.Jobs;
 using StableDiffusionSdk.Modules.Images;
 using StableDiffusionSdk.Modules.Prompts;
+using StableDiffusionSdk.Prompts;
 
 namespace StableDiffusionSdk.Workflows
 {
     public static class HypnotizeWorkflow
     {
-        public static async Task Run(StableDiffusionApi stableDiffusionApi, GptApi gptApi,
-            ImagePersister globalPersister)
+        public static async Task Run(StableDiffusionApi stableDiffusionApi,
+            ImagePersister globalPersister, IPrompter prompter)
         {
-            async Task<string> CreatePrompt(ImageDomainModel image)
-            {
-                var styles = new[]
-                {
-                    "charliebo artstyle",
-                    "holliemengert artstyle",
-                    "marioalberti artstyle",
-                    "pepelarraz artstyle",
-                    "andreasrocha artstyle",
-                    "jamesdaly artstyle",
-                    "comicmay artsyle"
-                };
-
-                var s = $@"
-Jack white wearing bright red shirt holding and showing photo of jack white holding and showing photo of jack white. 
-3 colors: white red black, Bright red circles in the background, looking up, Recursive, Fractal, sharp, trigger word: ""{styles[new Random().Next(styles.Length)]}""";
-
-                var interrogated = await stableDiffusionApi.Interrogate(new InterrogateRequest(image));
-                var gptPrompt = await gptApi.Consolidate(s, interrogated);
-                Console.WriteLine(gptPrompt);
-                return gptPrompt;
-            }
 
 
             var file = @"D:\Stable Diffusion\Recursive\\NIghtJob\hypnotize.jpg";
@@ -57,7 +36,7 @@ Jack white wearing bright red shirt holding and showing photo of jack white hold
 
                             if (prompt == string.Empty)
                             {
-                                prompt = await CreatePrompt(image);
+                                prompt = await prompter.GetPrompt(image);
                             }
 
                             var seed = Seed.Random();

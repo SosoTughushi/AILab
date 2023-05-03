@@ -4,18 +4,19 @@ using StableDiffusionSdk.Integrations.StableDiffusionWebUiApi;
 using StableDiffusionSdk.Jobs;
 using StableDiffusionSdk.Modules.Images;
 using StableDiffusionSdk.Modules.Prompts;
+using StableDiffusionSdk.Prompts;
 
 namespace StableDiffusionSdk.Workflows
 {
     public class SmoothZoomInWorkflow
     {
         private readonly StableDiffusionApi _stableDiffusionApi;
-        private readonly GptApi _gptApi;
+        private readonly IPrompter _prompter;
 
-        public SmoothZoomInWorkflow(StableDiffusionApi stableDiffusionApi, GptApi gptApi)
+        public SmoothZoomInWorkflow(StableDiffusionApi stableDiffusionApi, IPrompter prompter)
         {
             _stableDiffusionApi = stableDiffusionApi;
-            _gptApi = gptApi;
+            _prompter = prompter;
         }
 
         public async Task<Unit> Run(string path, int rezolution, double zoomPercent)
@@ -25,45 +26,7 @@ namespace StableDiffusionSdk.Workflows
             var _persistor = new ImagePersister(baseOutputFolder);
             var jsonWriter = new JsonWriter(_persistor.OutputFolder);
 
-            string? prompt = null!;
-            var promptCount = 0;
-
-            async Task<string> CreatePrompt(
-                ImageDomainModel image)
-            {
-                promptCount++;
-                if (promptCount % 10 == 0 || prompt is null)
-                {
-                    var clip = await _stableDiffusionApi.InterrogatePlease(image, InterrogationModel.Clip);
-
-                    var randomPrompt = new[]
-                    {
-                        "van gogh",
-                        "steampunk",
-                        "blade runner thematics",
-                        "scene from animatrix",
-                        "replace everything with cyberpunk",
-                        "bored cosmic entity looking at camera",
-                    };
-
-                    var styles = new[]
-                    {
-                        "charliebo artstyle",
-                        "holliemengert artstyle",
-                        "marioalberti artstyle",
-                        "pepelarraz artstyle",
-                        "andreasrocha artstyle",
-                        "jamesdaly artstyle",
-                        "comicmay artsyle"
-                    };
-
-                    prompt = await _gptApi.Consolidate(
-                        @$"{randomPrompt.PickRandom()}, trigger word: [{styles.PickRandom()}]",
-                        clip);
-                }
-
-                return prompt;
-            }
+            
 
             var zoomDirection = ZoomDirectionBuilder.Right(21.3).Bottom(12.5);
 
@@ -82,7 +45,7 @@ namespace StableDiffusionSdk.Workflows
             var angle = 2;
             for (var recursionCount = 0; recursionCount < recursionSteps; recursionCount++)
             {
-                var gptPrompt = await CreatePrompt(input);
+                var gptPrompt = await _prompter.GetPrompt(input);
                 var seed = Seed.Random();
 
                 var zoomDelta = zoomPercent - 100;
