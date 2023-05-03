@@ -14,9 +14,9 @@ namespace StableDiffusionSdk.Workflows
     public class LyricsToImagesWorkflow
     {
         private readonly GptApi _gptApi;
-        private readonly StableDiffusionApi _stableDiffusionApi;
+        private readonly ITextToImage _stableDiffusionApi;
 
-        public LyricsToImagesWorkflow(GptApi gptApi, StableDiffusionApi stableDiffusionApi)
+        public LyricsToImagesWorkflow(GptApi gptApi, ITextToImage stableDiffusionApi)
         {
             _gptApi = gptApi;
             _stableDiffusionApi = stableDiffusionApi;
@@ -34,7 +34,7 @@ namespace StableDiffusionSdk.Workflows
                     Prompt: $"{prompt}",
                     Seed: Seed.Random(),
                     Width: ImageResolution._1024,
-                    Height: ImageResolution._768,
+                    Height: ImageResolution._1024,
                     CfgScale: 7
                 );
                 await jsonWriter.Write(request);

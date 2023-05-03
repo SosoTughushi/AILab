@@ -1,39 +1,87 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using Image = System.Drawing.Image;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace StableDiffusionSdk.Modules.Images
 {
     public static class ImageExtensions
     {
-        public static Task<ImageDomainModel> Resize(this ImageDomainModel image, int width, int height)
+        public static async Task<ImageDomainModel> Resize(this ImageDomainModel image, int width, int height)
         {
-            return Task.FromResult(image with { Width = width, Height = height });
+            using var originalImage = image.ToSystemDrawingImage();
+            using var resizedImage = new Bitmap(width, height);
+            using (var graphics = Graphics.FromImage(resizedImage))
+            {
+                graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+
+                double originalAspectRatio = (double)originalImage.Width / originalImage.Height;
+                double targetAspectRatio = (double)width / height;
+                int cropWidth, cropHeight;
+
+                if (originalAspectRatio > targetAspectRatio)
+                {
+                    cropWidth = (int)(originalImage.Height * targetAspectRatio);
+                    cropHeight = originalImage.Height;
+                }
+                else
+                {
+                    cropWidth = originalImage.Width;
+                    cropHeight = (int)(originalImage.Width / targetAspectRatio);
+                }
+
+                int cropX = (originalImage.Width - cropWidth) / 2;
+                int cropY = (originalImage.Height - cropHeight) / 2;
+
+                var cropRect = new Rectangle(cropX, cropY, cropWidth, cropHeight);
+                graphics.DrawImage(originalImage, new Rectangle(0, 0, width, height), cropRect, GraphicsUnit.Pixel);
+            }
+
+            return await resizedImage.ToImageDomainModel(image);
         }
 
-        public static Task<ImageDomainModel> Resize(this ImageDomainModel inputImage, int maxDimension)
+
+
+        public static async Task<ImageDomainModel> Resize(this ImageDomainModel inputImage, int maxDimension)
         {
+            using var originalImage = inputImage.ToSystemDrawingImage();
             var width = inputImage.Width;
             var height = inputImage.Height;
             var aspectRatio = (double)inputImage.Width / inputImage.Height;
 
+            int newWidth, newHeight;
+
             if (width > height)
             {
-                width = maxDimension;
-                height = (int)(width / aspectRatio);
+                newWidth = maxDimension;
+                newHeight = (int)(newWidth / aspectRatio);
             }
             else
             {
-                height = maxDimension;
-                width = (int)(height * aspectRatio);
+                newHeight = maxDimension;
+                newWidth = (int)(newHeight * aspectRatio);
             }
 
-            width = width / 64 * 64;
-            height = height / 64 * 64;
+            int x = (originalImage.Width - newWidth) / 2;
+            int y = (originalImage.Height - newHeight) / 2;
 
-            return Task.FromResult(inputImage with { Height = height, Width = width });
+            using var resizedImage = new Bitmap(newWidth, newHeight);
+            using (var graphics = Graphics.FromImage(resizedImage))
+            {
+                graphics.DrawImage(originalImage, new Rectangle(0, 0, newWidth, newHeight), new Rectangle(x, y, newWidth, newHeight), GraphicsUnit.Pixel);
+            }
+
+            return await resizedImage.ToImageDomainModel(inputImage);
+        }
+
+        private static async Task<ImageDomainModel> ToImageDomainModel(this Image image, ImageDomainModel originalImage)
+        {
+            using var ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Png);
+            return new ImageDomainModel(Convert.ToBase64String(ms.ToArray()), image.Width, image.Height);
         }
     }
 

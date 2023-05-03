@@ -4,7 +4,12 @@ using StableDiffusionSdk.Modules.Images;
 
 namespace StableDiffusionSdk.Integrations.StableDiffusionWebUiApi
 {
-    public class StableDiffusionApi
+    public interface ITextToImage
+    {
+        Task<ImageDomainModel> TextToImage(Text2ImgRequest request);
+    }
+
+    public class StableDiffusionApi : ITextToImage
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiUrl;
@@ -67,8 +72,8 @@ namespace StableDiffusionSdk.Integrations.StableDiffusionWebUiApi
 
         public async Task<string> Interrogate(InterrogateRequest req)
         {
-            var request = new InterrogateApiRequest(req.InputImage.ContentAsBase64String, 
-                req.Model == InterrogationModel.Clip ? "clip": "deepdanbooru");
+            var request = new InterrogateApiRequest(req.InputImage.ContentAsBase64String,
+                req.Model == InterrogationModel.Clip ? "clip" : "deepdanbooru");
 
             var options = new JsonSerializerOptions
             {
@@ -80,7 +85,7 @@ namespace StableDiffusionSdk.Integrations.StableDiffusionWebUiApi
             var jsonResponse = await response.Content.ReadAsStringAsync();
 
             response.EnsureSuccessStatusCode();
-            
+
             var parsedResponse = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonResponse);
 
             return parsedResponse!["caption"];

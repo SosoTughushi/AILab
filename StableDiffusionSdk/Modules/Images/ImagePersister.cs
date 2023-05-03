@@ -19,13 +19,13 @@
             Directory.CreateDirectory($"{OutputFolder}");
         }
 
-        public async Task<ImageDomainModel> Persist(ImageDomainModel image)
+        public async Task<string> Persist(ImageDomainModel image)
         {
             _savedImageCount++;
             var fileName = Path.Combine(OutputFolder, $"{_savedImageCount:D5}.jpg");
             await image.SaveAsJpg(fileName);
 
-            return image;
+            return fileName;
         }
     }
 }
