@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using StableDiffusionSdk.Integrations.OpenAiGptApi;
+﻿using Newtonsoft.Json;
+using StableDiffusionSdk.Integrations.OpenAi;
 
-namespace StableDiffusionSdk.Modules.Prompts
+namespace StableDiffusionSdk.Utilities.Prompts
 {
     public static class SongLyricsToPrompt
     {

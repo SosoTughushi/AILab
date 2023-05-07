@@ -1,7 +1,7 @@
-﻿using StableDiffusionSdk.Integrations.OpenAiGptApi;
-using StableDiffusionSdk.Integrations.StableDiffusionWebUiApi;
-using StableDiffusionSdk.Modules.Images;
-using StableDiffusionSdk.Modules.Prompts;
+﻿using StableDiffusionSdk.Integrations.OpenAi;
+using StableDiffusionSdk.Utilities.Prompts;
+using StableDiffusionTools.Domain;
+using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
 namespace StableDiffusionSdk.Prompts;
 

@@ -1,4 +1,6 @@
-﻿namespace StableDiffusionSdk.Modules.Images
+﻿using StableDiffusionTools.Domain;
+
+namespace StableDiffusionSdk.Utilities.Images
 {
     public class ImagePersister
     {

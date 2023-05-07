@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
-using StableDiffusionSdk.Modules.Images;
+using StableDiffusionTools.Domain;
 using SD = System.Drawing;
+namespace StableDiffusionSdk.Utilities.Images;
+
 public static class RotateImageExtensions
 {
     public static SD.Image ToSystemDrawingImage(this ImageDomainModel imageDomainModel)

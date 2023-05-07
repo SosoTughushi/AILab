@@ -1,8 +1,8 @@
-﻿using StableDiffusionSdk.Integrations.OpenAiGptApi;
+﻿using StableDiffusionSdk.Integrations.OpenAi;
 using StableDiffusionSdk.Jobs;
-using StableDiffusionSdk.Modules.Images;
+using StableDiffusionTools.Domain;
 
-namespace StableDiffusionSdk.Modules.Prompts
+namespace StableDiffusionSdk.Utilities.Prompts
 {
     public class GptPrompter : IJob<(ImageDomainModel, string), string>
     {

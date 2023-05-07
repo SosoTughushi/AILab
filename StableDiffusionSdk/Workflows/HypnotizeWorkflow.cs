@@ -1,9 +1,9 @@
-﻿using StableDiffusionSdk.Integrations.OpenAiGptApi;
-using StableDiffusionSdk.Integrations.StableDiffusionWebUiApi;
-using StableDiffusionSdk.Jobs;
+﻿using StableDiffusionSdk.Jobs;
 using StableDiffusionSdk.Modules.Images;
-using StableDiffusionSdk.Modules.Prompts;
 using StableDiffusionSdk.Prompts;
+using StableDiffusionSdk.Utilities.Images;
+using StableDiffusionTools.Domain;
+using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
 namespace StableDiffusionSdk.Workflows
 {

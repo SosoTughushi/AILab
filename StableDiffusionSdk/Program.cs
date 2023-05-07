@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using StableDiffusionSdk.Integrations.EbSynth;
-using StableDiffusionSdk.Integrations.OpenAiGptApi;
-using StableDiffusionSdk.Integrations.StableDiffusionWebUiApi;
+using StableDiffusionSdk.Integrations.OpenAi;
 using StableDiffusionSdk.Modules.Images;
 using StableDiffusionSdk.Prompts;
 using StableDiffusionSdk.Workflows;
+using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
 // Read configuration from appsettings.json, appsettings.local.json, and environment variables
 
@@ -25,9 +25,18 @@ var stableDiffusionUrl = configuration["StableDiffusionUrl"]!;
 var stableDiffusionApi = new StableDiffusionApi(stableDiffusionUrl);
 var ebSynth = new EbSynth(configuration["EbSynthLocation"]!);
 
-var comicDiffusionPrompter = new ComicDiffusionPrompter(gptApi, stableDiffusionApi).Cached(10);
+var comicDiffusionPrompter = new EldenRingPrompter(gptApi, stableDiffusionApi, "Outer space").Cached(2);
 
-var ebSynthVideoWorkflow =
-    new VideoToVideoViaEbSynth(stableDiffusionApi, ebSynth, comicDiffusionPrompter, ImageResolution._1024);
+//var videoToVideoWorkflow = new VideoToVideoWorkflow(stableDiffusionApi, comicDiffusionPrompter);
+//await videoToVideoWorkflow.Run(
+//    inputVideoLocation: @"D:\Stable Diffusion\Workspace\Tsnisi\Tunnel\Sauce.mp4",
+//    outputFolder: @"D:\Stable Diffusion\Workspace\Tsnisi\Tunnel\Comic",
+//    4);
 
 
+var smoothZoomInWorkflow = new VideoToVideoWorkflow(stableDiffusionApi, comicDiffusionPrompter);
+await smoothZoomInWorkflow.Run(
+    inputVideoLocation: @"C:\Users\TomTo\Videos\Captures\Outer Wilds 2023-05-07 01-38-38.mp4",
+    outputFolder:@"C:\Users\TomTo\Videos\Captures\Outer Wilds 2023-05-07 01-38-38",
+    takeEveryXthFrame:30*10,
+    ImageResolution._1408);

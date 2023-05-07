@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
-using StableDiffusionSdk.Modules.Images;
+using StableDiffusionSdk.Utilities.Images;
+using StableDiffusionTools.Domain;
 using Color = System.Drawing.Color;
-using Rectangle = System.Drawing.Rectangle;
 
 public static class ChangeRgb
 {

@@ -1,7 +1,7 @@
 ﻿using StableDiffusionSdk.Jobs;
-using StableDiffusionSdk.Modules.Images;
+using StableDiffusionTools.Domain;
 
-namespace StableDiffusionSdk.Modules.Prompts
+namespace StableDiffusionSdk.Utilities.Prompts
 {
     public class DefaultPrompter : IJob<(ImageDomainModel, string), string>
     {

@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using StableDiffusionSdk.Utilities.Images;
+using StableDiffusionTools.Domain;
 using Image = System.Drawing.Image;
 using Rectangle = System.Drawing.Rectangle;
 

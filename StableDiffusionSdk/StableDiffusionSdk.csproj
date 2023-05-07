@@ -29,6 +29,10 @@
     <PackageReference Include="System.Windows.Extensions" Version="8.0.0-preview.3.23174.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\StableDiffusionTools.Integrations.StableDiffusionWebUi\StableDiffusionTools.Integrations.StableDiffusionWebUi.csproj" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<None Update="appsettings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

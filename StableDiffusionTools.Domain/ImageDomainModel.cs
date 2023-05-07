@@ -1,9 +1,12 @@
-﻿using System.Drawing;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System.Drawing;
 
-namespace StableDiffusionSdk.Modules.Images;
+namespace StableDiffusionTools.Domain;
 
-public record ImageDomainModel([property: JsonIgnore] string ContentAsBase64String, int Width, int Height)
+public record ImageDomainModel(
+    [property: JsonIgnore] string ContentAsBase64String,
+    int Width,
+    int Height)
 {
     public static ImageDomainModel FromSystemDrawingImage(Bitmap rotatedImage, ImageDomainModel input)
     {
@@ -12,3 +15,4 @@ public record ImageDomainModel([property: JsonIgnore] string ContentAsBase64Stri
         return new ImageDomainModel(Convert.ToBase64String(ms.ToArray()), input.Width, input.Height);
     }
 };
+

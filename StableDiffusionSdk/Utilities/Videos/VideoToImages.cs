@@ -2,6 +2,8 @@
 using MediaToolkit.Model;
 using MediaToolkit.Options;
 
+namespace StableDiffusionSdk.Utilities.Videos;
+
 public class VideoProcessor
 {
     public static IEnumerable<string> DisassembleVideoToFrames(string mp4VideoFullAddress, int takeEveryXthFrame)

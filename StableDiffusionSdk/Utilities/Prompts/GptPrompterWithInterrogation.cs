@@ -1,10 +1,10 @@
-﻿using StableDiffusionSdk.Integrations.OpenAiGptApi;
+﻿using StableDiffusionSdk.Integrations.OpenAi;
 
-namespace StableDiffusionSdk.Modules.Prompts
+namespace StableDiffusionSdk.Utilities.Prompts;
+
+public static class GptPrompterWithInterrogation
 {
-    public static class GptPrompterWithInterrogation
-    {
-        private static string Template = @"
+    private static string Template = @"
 You are used within stable diffusion software to generate prompts for images. 
 Prompts should be a small sentence that highlights the features of the image/painting that we are making stable diffusion to produce.
 Prompts should be short and contain keywords describing the desired style of the image.
@@ -58,30 +58,29 @@ Interrogated Image result: [{0}]
 UserInput: [{1}]
 ";
 
-        /// <summary>
-        /// Consolidates the prompt and image interrogation result using the GPT API.
-        /// The method follows user instructions provided in the image interrogation result. The rules are as follows:
-        /// a) If user instruction contains "Choose randomly from those prompts: [prompt1], [prompt2], [prompt3]", the method will return one of the given options.
-        /// b) If user instruction contains "Replace every object with [something]", the method will replace every keyword from the interrogation result with the specified "something".
-        /// c) If user instruction contains a trigger word, the method will paste it unchanged in the result.
-        /// </summary>
-        /// <param name="api">The GPT API instance.</param>
-        /// <param name="prompt">The prompt for image interrogation.</param>
-        /// <param name="clipResult">The image interrogation result.</param>
-        /// <returns>A Task that returns the consolidated string.</returns>
-        public static async Task<string> Consolidate(this GptApi api, string prompt, string clipResult)
-        {
-            Console.WriteLine("==========================================");
-            Console.WriteLine(prompt);
-            Console.WriteLine();
-            Console.WriteLine(clipResult);
-            Console.WriteLine();
-            var gptMessage = Template.Replace("{0}", clipResult).Replace("{1}", prompt);
-            var consolidated = await api.GenerateTextAsync(gptMessage);
+    /// <summary>
+    /// Consolidates the prompt and image interrogation result using the GPT API.
+    /// The method follows user instructions provided in the image interrogation result. The rules are as follows:
+    /// a) If user instruction contains "Choose randomly from those prompts: [prompt1], [prompt2], [prompt3]", the method will return one of the given options.
+    /// b) If user instruction contains "Replace every object with [something]", the method will replace every keyword from the interrogation result with the specified "something".
+    /// c) If user instruction contains a trigger word, the method will paste it unchanged in the result.
+    /// </summary>
+    /// <param name="api">The GPT API instance.</param>
+    /// <param name="prompt">The prompt for image interrogation.</param>
+    /// <param name="clipResult">The image interrogation result.</param>
+    /// <returns>A Task that returns the consolidated string.</returns>
+    public static async Task<string> Consolidate(this GptApi api, string prompt, string clipResult)
+    {
+        Console.WriteLine("==========================================");
+        Console.WriteLine(prompt);
+        Console.WriteLine();
+        Console.WriteLine(clipResult);
+        Console.WriteLine();
+        var gptMessage = Template.Replace("{0}", clipResult).Replace("{1}", prompt);
+        var consolidated = await api.GenerateTextAsync(gptMessage);
 
-            Console.WriteLine(consolidated);
+        Console.WriteLine(consolidated);
 
-            return consolidated;
-        }
+        return consolidated;
     }
 }

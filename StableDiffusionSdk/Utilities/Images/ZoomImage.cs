@@ -1,7 +1,8 @@
 ﻿using System.Drawing;
+using StableDiffusionTools.Domain;
 using Color = System.Drawing.Color;
 
-namespace StableDiffusionSdk.Modules.Images;
+namespace StableDiffusionSdk.Utilities.Images;
 
 public static class ZoomDirectionBuilder
 {
