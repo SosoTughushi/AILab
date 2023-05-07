@@ -1,7 +1,8 @@
 ﻿using System.Drawing;
 using StableDiffusionTools.Domain;
 using SD = System.Drawing;
-namespace StableDiffusionSdk.Utilities.Images;
+
+namespace StableDiffusionTools.ImageUtilities;
 
 public static class RotateImageExtensions
 {

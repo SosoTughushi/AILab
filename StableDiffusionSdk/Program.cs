@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
-using StableDiffusionSdk.Integrations.EbSynth;
 using StableDiffusionSdk.Integrations.OpenAi;
-using StableDiffusionSdk.Modules.Images;
 using StableDiffusionSdk.Prompts;
 using StableDiffusionSdk.Workflows;
+using StableDiffusionTools.ImageUtilities;
+using StableDiffusionTools.Integrations.EbSynth;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
 // Read configuration from appsettings.json, appsettings.local.json, and environment variables

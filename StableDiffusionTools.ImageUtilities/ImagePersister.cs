@@ -1,6 +1,6 @@
 ﻿using StableDiffusionTools.Domain;
 
-namespace StableDiffusionSdk.Utilities.Images
+namespace StableDiffusionTools.ImageUtilities
 {
     public class ImagePersister
     {

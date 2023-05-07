@@ -11,6 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StableDiffusionTools.Integr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StableDiffusionTools.Domain", "StableDiffusionTools.Domain\StableDiffusionTools.Domain.csproj", "{B347D46B-A2C0-400E-A0C7-0BB9B020FAB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StableDiffusionTools.Integrations.EbSynth", "StableDiffusionTools.Integrations.EbSynth\StableDiffusionTools.Integrations.EbSynth.csproj", "{EC3EF19A-2765-4D95-AD77-3FC38D1FD339}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{E6CF0D93-9E0F-490B-8E7D-55B1421B8BE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StableDiffusionTools.ImageUtilities", "StableDiffusionTools.ImageUtilities\StableDiffusionTools.ImageUtilities.csproj", "{B1EE1511-ABF1-4F87-BB41-CCF2E7224F5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,12 +35,23 @@ Global
 		{B347D46B-A2C0-400E-A0C7-0BB9B020FAB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B347D46B-A2C0-400E-A0C7-0BB9B020FAB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B347D46B-A2C0-400E-A0C7-0BB9B020FAB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC3EF19A-2765-4D95-AD77-3FC38D1FD339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC3EF19A-2765-4D95-AD77-3FC38D1FD339}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC3EF19A-2765-4D95-AD77-3FC38D1FD339}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC3EF19A-2765-4D95-AD77-3FC38D1FD339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1EE1511-ABF1-4F87-BB41-CCF2E7224F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1EE1511-ABF1-4F87-BB41-CCF2E7224F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1EE1511-ABF1-4F87-BB41-CCF2E7224F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1EE1511-ABF1-4F87-BB41-CCF2E7224F5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4D7B80D9-345F-4280-A13A-D266A5724E3A} = {C14ED56E-BFEA-4DB2-B5A2-A22B69DD6499}
+		{B347D46B-A2C0-400E-A0C7-0BB9B020FAB2} = {E6CF0D93-9E0F-490B-8E7D-55B1421B8BE0}
+		{EC3EF19A-2765-4D95-AD77-3FC38D1FD339} = {C14ED56E-BFEA-4DB2-B5A2-A22B69DD6499}
+		{B1EE1511-ABF1-4F87-BB41-CCF2E7224F5B} = {E6CF0D93-9E0F-490B-8E7D-55B1421B8BE0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {11D3F132-1EA0-4533-B0CB-1070751C76D6}

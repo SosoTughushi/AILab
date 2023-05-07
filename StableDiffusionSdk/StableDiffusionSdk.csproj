@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StableDiffusionTools.Integrations.EbSynth\StableDiffusionTools.Integrations.EbSynth.csproj" />
     <ProjectReference Include="..\StableDiffusionTools.Integrations.StableDiffusionWebUi\StableDiffusionTools.Integrations.StableDiffusionWebUi.csproj" />
   </ItemGroup>
 

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using StableDiffusionSdk.Utilities.Images;
 using StableDiffusionTools.Domain;
+using StableDiffusionTools.ImageUtilities;
 
-namespace StableDiffusionSdk.Integrations.EbSynth
+namespace StableDiffusionTools.Integrations.EbSynth
 {
     public class EbSynth
     {

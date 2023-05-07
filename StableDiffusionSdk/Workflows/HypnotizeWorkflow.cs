@@ -1,8 +1,7 @@
 ﻿using StableDiffusionSdk.Jobs;
-using StableDiffusionSdk.Modules.Images;
 using StableDiffusionSdk.Prompts;
-using StableDiffusionSdk.Utilities.Images;
 using StableDiffusionTools.Domain;
+using StableDiffusionTools.ImageUtilities;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
 namespace StableDiffusionSdk.Workflows

@@ -1,7 +1,8 @@
 ﻿using System.Drawing;
-using StableDiffusionSdk.Utilities.Images;
 using StableDiffusionTools.Domain;
 using Color = System.Drawing.Color;
+
+namespace StableDiffusionTools.ImageUtilities;
 
 public static class ChangeRgb
 {
@@ -65,7 +66,7 @@ public static class ChangeRgb
 
         return Task.FromResult((averageRed, averageGreen, averageBlue));
     }
-    
+
     private static int Truncate(double value)
     {
         return (int)Math.Min(Math.Max(value, 0), 255);

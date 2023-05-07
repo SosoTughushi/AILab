@@ -1,12 +1,11 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using StableDiffusionSdk.Utilities.Images;
 using StableDiffusionTools.Domain;
 using Image = System.Drawing.Image;
 using Rectangle = System.Drawing.Rectangle;
 
-namespace StableDiffusionSdk.Modules.Images
+namespace StableDiffusionTools.ImageUtilities
 {
     public static class ImageExtensions
     {
@@ -17,8 +16,8 @@ namespace StableDiffusionSdk.Modules.Images
             using (var graphics = Graphics.FromImage(resizedImage))
             {
                 graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
                 double originalAspectRatio = (double)originalImage.Width / originalImage.Height;
                 double targetAspectRatio = (double)width / height;
