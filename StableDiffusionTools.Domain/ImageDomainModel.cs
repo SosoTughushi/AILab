@@ -16,3 +16,27 @@ public record ImageDomainModel(
     }
 };
 
+
+public interface ITextToImage
+{
+    Task<ImageDomainModel> TextToImage(Text2ImgRequest request);
+}
+
+public record Text2ImgRequest
+(
+    string Prompt,
+    Seed Seed,
+    int Width,
+    int Height,
+    double CfgScale = 7,
+    int Steps = 20,
+    string? NegativePrompt = null,
+    bool RestoreFaces = false
+);
+
+
+public record Seed(int Value)
+{
+    public static Seed Random() => new(new Random().Next());
+}
+

@@ -17,7 +17,6 @@
   <ItemGroup>
     <PackageReference Include="Accord.Imaging" Version="3.8.2-alpha" />
     <PackageReference Include="Accord.Video.FFMPEG" Version="3.8.2-alpha" />
-    <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.8.4" />
     <PackageReference Include="FFmpeg.Net" Version="1.1.0" />
     <PackageReference Include="MediaToolkit" Version="1.1.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-preview.3.23174.8" />
@@ -31,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StableDiffusionTools.Integrations.EbSynth\StableDiffusionTools.Integrations.EbSynth.csproj" />
+    <ProjectReference Include="..\StableDiffusionTools.Integrations.OpenAi\StableDiffusionTools.Integrations.OpenAi.csproj" />
     <ProjectReference Include="..\StableDiffusionTools.Integrations.StableDiffusionWebUi\StableDiffusionTools.Integrations.StableDiffusionWebUi.csproj" />
   </ItemGroup>
 

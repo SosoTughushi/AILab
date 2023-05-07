@@ -1,5 +1,6 @@
 ﻿using StableDiffusionSdk.Prompts;
 using StableDiffusionSdk.Utilities.Videos;
+using StableDiffusionTools.Domain;
 using StableDiffusionTools.ImageUtilities;
 using StableDiffusionTools.Integrations.EbSynth;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;

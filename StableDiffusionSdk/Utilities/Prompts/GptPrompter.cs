@@ -1,6 +1,6 @@
-﻿using StableDiffusionSdk.Integrations.OpenAi;
-using StableDiffusionSdk.Jobs;
+﻿using StableDiffusionSdk.Jobs;
 using StableDiffusionTools.Domain;
+using StableDiffusionTools.Integrations.OpenAi;
 
 namespace StableDiffusionSdk.Utilities.Prompts
 {

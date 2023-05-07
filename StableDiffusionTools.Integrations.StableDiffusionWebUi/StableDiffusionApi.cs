@@ -5,10 +5,6 @@ using StableDiffusionTools.Domain;
 
 namespace StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
-public interface ITextToImage
-{
-    Task<ImageDomainModel> TextToImage(Text2ImgRequest request);
-}
 
 public class StableDiffusionApi : ITextToImage
 {

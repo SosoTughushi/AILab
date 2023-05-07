@@ -4,7 +4,7 @@ using OpenAI.GPT3.Managers;
 using OpenAI.GPT3.ObjectModels;
 using OpenAI.GPT3.ObjectModels.RequestModels;
 
-namespace StableDiffusionSdk.Integrations.OpenAi;
+namespace StableDiffusionTools.Integrations.OpenAi;
 
 public class GptApi
 {

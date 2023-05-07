@@ -1,4 +1,4 @@
-﻿using StableDiffusionSdk.Integrations.OpenAi;
+﻿using StableDiffusionTools.Integrations.OpenAi;
 
 namespace StableDiffusionSdk.Utilities.Prompts;
 

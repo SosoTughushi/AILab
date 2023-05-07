@@ -3,9 +3,8 @@ using OpenAI.GPT3.Interfaces;
 using OpenAI.GPT3.Managers;
 using OpenAI.GPT3.ObjectModels.RequestModels;
 using StableDiffusionTools.Domain;
-using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
-namespace StableDiffusionSdk.Integrations.OpenAi;
+namespace StableDiffusionTools.Integrations.OpenAi;
 
 public class OpenAiImageApi : ITextToImage
 {

@@ -1,8 +1,8 @@
 ﻿using StableDiffusionSdk.Infrastructure;
-using StableDiffusionSdk.Integrations.OpenAi;
 using StableDiffusionSdk.Utilities.Prompts;
+using StableDiffusionTools.Domain;
 using StableDiffusionTools.ImageUtilities;
-using StableDiffusionTools.Integrations.StableDiffusionWebUi;
+using StableDiffusionTools.Integrations.OpenAi;
 
 namespace StableDiffusionSdk.Workflows;
 

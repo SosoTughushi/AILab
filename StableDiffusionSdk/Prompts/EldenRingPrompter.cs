@@ -1,6 +1,6 @@
 ﻿using StableDiffusionSdk.Infrastructure;
-using StableDiffusionSdk.Integrations.OpenAi;
 using StableDiffusionTools.Domain;
+using StableDiffusionTools.Integrations.OpenAi;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
 namespace StableDiffusionSdk.Prompts;
