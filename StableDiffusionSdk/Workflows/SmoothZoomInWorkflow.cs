@@ -28,7 +28,8 @@ namespace StableDiffusionSdk.Workflows
 
             
 
-            var zoomDirection = ZoomDirectionBuilder.Right(21.3).Bottom(12.5);
+            //var zoomDirection = ZoomDirectionBuilder.Right(21.3).Bottom(12.5);
+            var zoomDirection = ZoomDirectionBuilder.Right(0).Bottom(0);
 
             var input = await path.ReadImage();
 
@@ -38,11 +39,10 @@ namespace StableDiffusionSdk.Workflows
             input = await input.Resize(rezolution);
 
 
-            const double denoisingStrength = 0.3;
+            const double denoisingStrength = 0.25;
             const int recursionSteps = 50;
             const int inBetweenSteps = 4;
             var regulator = new RgbRegulator();
-            var angle = 2;
             for (var recursionCount = 0; recursionCount < recursionSteps; recursionCount++)
             {
                 var gptPrompt = await _prompter.GetPrompt(input);
@@ -58,11 +58,8 @@ namespace StableDiffusionSdk.Workflows
                     var zoomed = await input.Zoom(100 + zoomDeltaEachStep * i, zoomDirection);
                     var regulated = await regulator.Regulate(zoomed);
 
-                    var rotated = await regulated.Rotate(angle * i);
-
-
                     var ds = Math.Round(denoisingStrengthStep * i, 3);
-                    result = await Image2Image(rotated, gptPrompt, seed, jsonWriter, ds);
+                    result = await Image2Image(regulated, gptPrompt, seed, jsonWriter, ds);
 
                     await _persistor.Persist(result);
                 }

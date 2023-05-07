@@ -12,10 +12,11 @@ public class VideoProcessor
         }
 
         var outputFolderForFrames = "FramesTemp";
-        if (!Directory.Exists(outputFolderForFrames))
+        if (Directory.Exists(outputFolderForFrames))
         {
-            Directory.CreateDirectory(outputFolderForFrames);
+            Directory.Delete(outputFolderForFrames, true);
         }
+        Directory.CreateDirectory(outputFolderForFrames);
 
         var frameIndex = 0;
         using var engine = new Engine();

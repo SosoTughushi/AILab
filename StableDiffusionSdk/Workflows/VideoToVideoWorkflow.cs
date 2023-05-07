@@ -18,22 +18,31 @@ namespace StableDiffusionSdk.Workflows
             _prompter = prompter;
         }
 
-        public async Task Run(string inputVideoLocation, string outputFolder, int takeEveryXthFrame)
+        public async Task Run(string inputVideoLocation, string outputFolder, int takeEveryXthFrame, int rezolution)
         {
             var persistor = new ImagePersister(outputFolder);
             foreach(var frame in VideoProcessor.DisassembleVideoToFrames(inputVideoLocation, takeEveryXthFrame))
             {
                 var image = await frame.ReadImage();
-                image = await image.Resize(ImageResolution._1408);
-                var defused = await _stableDiffusionApi.ImageToImage(new Img2ImgRequest(
-                    InputImage: image!,
-                    Prompt: await _prompter.GetPrompt(image),
-                    DenoisingStrength: 0.25,
-                    Seed.Random()
+                image = await image.Resize(rezolution, rezolution);
 
-                ));
+                try
+                {
+                    var defused = await _stableDiffusionApi.ImageToImage(new Img2ImgRequest(
+                        InputImage: image!,
+                        Prompt: await _prompter.GetPrompt(image),
+                        NegativePrompt:"text, letters, comic characters, numbers",
+                        DenoisingStrength: 0.35,
+                        Seed: Seed.Random()
 
-                await persistor.Persist(defused);
+                    ));
+
+                    await persistor.Persist(defused);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
         }
         

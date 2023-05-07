@@ -10,13 +10,13 @@ using StableDiffusionSdk.Modules.Images;
 
 namespace StableDiffusionSdk.Prompts
 {
-    public class ComicDiffusionPrompter : IPrompter
+    public class EldenRingPrompter : IPrompter
     {
         private readonly GptApi _gptApi;
         private readonly StableDiffusionApi _stableDiffusionApi;
         private readonly string _prompt;
 
-        public ComicDiffusionPrompter(GptApi gptApi, StableDiffusionApi stableDiffusionApi, string prompt)
+        public EldenRingPrompter(GptApi gptApi, StableDiffusionApi stableDiffusionApi, string prompt)
         {
             _gptApi = gptApi;
             _stableDiffusionApi = stableDiffusionApi;
@@ -35,7 +35,7 @@ namespace StableDiffusionSdk.Prompts
                 "comicmay artsyle"
             };
             var randomStyle = styles.PickRandom();
-            var gptPrompter = new GptPrompter(_gptApi, _stableDiffusionApi, $"{_prompt}, trigger word [{randomStyle}]");
+            var gptPrompter = new GptPrompter(_gptApi, _stableDiffusionApi, $"{_prompt}, trigger word: [elden ring style]");
             return await gptPrompter.GetPrompt(image);
         }
     }

@@ -50,7 +50,7 @@ namespace StableDiffusionSdk.Workflows
                 var middleDefused = await _stableDiffusionApi.ImageToImage(new Img2ImgRequest(
                     InputImage: middleGuideImage!,
                     Prompt: await _prompter.GetPrompt(middleGuideImage),
-                    DenoisingStrength: 0.25,
+                    DenoisingStrength: 0.35,
                     Seed.Random()
                 ));
 
