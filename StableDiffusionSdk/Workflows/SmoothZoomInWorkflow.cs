@@ -18,7 +18,7 @@ public class SmoothZoomInWorkflow
         _prompter = prompter;
     }
 
-    public async Task<Unit> Run(string path, int rezolution, double zoomPercent)
+    public async Task<Unit> Run(string path, int rezolution, double zoomPercent, double zoomInCount, double denoisingStrength, int middleStepCount)
     {
         var baseOutputFolder = Path.Combine(Path.GetDirectoryName(path)!,
             Path.GetFileNameWithoutExtension(path));
@@ -37,22 +37,19 @@ public class SmoothZoomInWorkflow
 
         input = await input.Resize(rezolution);
 
-
-        const double denoisingStrength = 0.25;
-        const int recursionSteps = 50;
-        const int inBetweenSteps = 4;
+        
         var regulator = new RgbRegulator();
-        for (var recursionCount = 0; recursionCount < recursionSteps; recursionCount++)
+        for (var recursionCount = 0; recursionCount < zoomInCount; recursionCount++)
         {
             var gptPrompt = await _prompter.GetPrompt(input);
             var seed = Seed.Random();
 
             var zoomDelta = zoomPercent - 100;
-            var zoomDeltaEachStep = zoomDelta / inBetweenSteps;
-            const double denoisingStrengthStep = denoisingStrength / inBetweenSteps;
+            var zoomDeltaEachStep = zoomDelta / middleStepCount;
+            double denoisingStrengthStep = denoisingStrength / middleStepCount;
 
             var result = input;
-            for (var i = 1; i <= inBetweenSteps; i++)
+            for (var i = 1; i <= middleStepCount; i++)
             {
                 var zoomed = await input.Zoom(100 + zoomDeltaEachStep * i, zoomDirection);
                 var regulated = await regulator.Regulate(zoomed);

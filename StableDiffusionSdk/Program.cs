@@ -25,7 +25,7 @@ var stableDiffusionUrl = configuration["StableDiffusionUrl"]!;
 var stableDiffusionApi = new StableDiffusionApi(stableDiffusionUrl);
 var ebSynth = new EbSynth(configuration["EbSynthLocation"]!);
 
-var comicDiffusionPrompter = new EldenRingPrompter(gptApi, stableDiffusionApi, "Outer space").Cached(2);
+var eldenRingPrompter = new ComicDiffusionPrompter(gptApi, stableDiffusionApi,"something").Cached(10);
 
 //var videoToVideoWorkflow = new VideoToVideoWorkflow(stableDiffusionApi, comicDiffusionPrompter);
 //await videoToVideoWorkflow.Run(
@@ -34,9 +34,14 @@ var comicDiffusionPrompter = new EldenRingPrompter(gptApi, stableDiffusionApi, "
 //    4);
 
 
-var smoothZoomInWorkflow = new VideoToVideoWorkflow(stableDiffusionApi, comicDiffusionPrompter);
-await smoothZoomInWorkflow.Run(
-    inputVideoLocation: @"C:\Users\TomTo\Videos\Captures\Outer Wilds 2023-05-07 01-38-38.mp4",
-    outputFolder:@"C:\Users\TomTo\Videos\Captures\Outer Wilds 2023-05-07 01-38-38",
-    takeEveryXthFrame:30*10,
-    ImageResolution._1408);
+var smoothZoomInWorkflow = new StretchWorkflow(stableDiffusionApi, eldenRingPrompter);
+foreach (var file in Directory.EnumerateFiles(@"D:\Stable Diffusion\Recursive\Bright"))
+{
+    await smoothZoomInWorkflow.Run(
+        file: file
+        
+        
+        );
+
+    return;
+}

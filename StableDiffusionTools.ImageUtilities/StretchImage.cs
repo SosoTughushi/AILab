@@ -1,42 +1,51 @@
-﻿using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using StableDiffusionTools.Domain;
+using Image = SixLabors.ImageSharp.Image;
+using SixLabors.ImageSharp.Advanced;
+using SixLabors.ImageSharp.Formats.Png;
+using System.Numerics;
+using OpenCvSharp;
+using SixLabors.ImageSharp.Processing.Processors;
 
 namespace StableDiffusionTools.ImageUtilities;
 
 public static class StretchImageExtensions
 {
-    public static async Task<ImageDomainModel> Stretch(this ImageDomainModel image, StretchDirection direction, CropPosition position)
+    public static async Task<ImageDomainModel> LogarithmicWarpLeft(this ImageDomainModel source, double k)
     {
-        using var originalImage = image.ToSystemDrawingImage();
+        // Load the image from base64 string
+        Mat mat = Cv2.ImDecode(Convert.FromBase64String(source.ContentAsBase64String), ImreadModes.Color);
 
-        var newWidth = originalImage.Width + originalImage.Width * direction.DeltaX / 100;
-        var newHeight = originalImage.Height + originalImage.Height * direction.DeltaY / 100;
+        // Compute the logarithmic function to apply
+        double centerX = mat.Width / 2.0;
+        Func<double, double> logFunction = (x) => x + k * Math.Log(Math.Abs(centerX - x));
 
-        using var stretchedImage = new Bitmap(newWidth, newHeight, originalImage.PixelFormat);
-        using (var g = Graphics.FromImage(stretchedImage))
+        // Compute the new pixel coordinates for each pixel in the image
+        Mat map_x = new Mat(mat.Size(), MatType.CV_32FC1);
+        Mat map_y = new Mat(mat.Size(), MatType.CV_32FC1);
+        for (int y = 0; y < mat.Rows; y++)
         {
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            g.DrawImage(originalImage, 0, 0, newWidth, newHeight);
+            for (int x = 0; x < mat.Cols; x++)
+            {
+                double newX = logFunction(x);
+                map_x.At<float>(y, x) = (float)newX;
+                map_y.At<float>(y, x) = (float)y;
+            }
         }
 
-        var cropRect = new System.Drawing.Rectangle(
-            (int)(position.X * (newWidth - originalImage.Width)),
-            (int)(position.Y * (newHeight - originalImage.Height)),
-            originalImage.Width,
-            originalImage.Height
-        );
+        // Apply the perspective transform to the image
+        Mat warpedMat = new Mat();
+        Cv2.Remap(mat, warpedMat, map_x, map_y, InterpolationFlags.Linear);
 
-        using var croppedImage = new Bitmap(originalImage.Width, originalImage.Height, originalImage.PixelFormat);
-        using (var g = Graphics.FromImage(croppedImage))
-        {
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            g.DrawImage(stretchedImage, new System.Drawing.Rectangle(0, 0, originalImage.Width, originalImage.Height), cropRect, GraphicsUnit.Pixel);
-        }
+        // Convert the resulting image to a Bitmap and return it
+        warpedMat.ConvertTo(warpedMat, MatType.CV_8UC3);
+        Cv2.ImEncode(".jpg", warpedMat, out var imageData);
+        var resultBitmap = new Bitmap(new MemoryStream(imageData));
 
-        return ImageDomainModel.FromSystemDrawingImage(croppedImage, image);
+        return ImageDomainModel.FromSystemDrawingImage(resultBitmap, source);
     }
 }
 
-public record StretchDirection(int DeltaX, int DeltaY);
-public record CropPosition(double X, double Y);
+public record StretchDirection(double DeltaX, double DeltaY);

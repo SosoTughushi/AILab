@@ -15,6 +15,20 @@ namespace StableDiffusionSdk.Prompts
         }
     }
 
+    public class DefaultPrompoter : IPrompter
+    {
+        private readonly string _prompt;
+
+        public DefaultPrompoter(string prompt)
+        {
+            _prompt = prompt;
+        }
+        public Task<string> GetPrompt(ImageDomainModel image)
+        {
+            return Task.FromResult(_prompt);
+        }
+    }
+
     public class CachedPrompt : IPrompter
     {
         private readonly IPrompter _decorated;

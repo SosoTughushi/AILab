@@ -48,10 +48,14 @@ namespace StableDiffusionTools.ImageUtilities
 
         public static async Task<ImageDomainModel> Resize(this ImageDomainModel inputImage, int maxDimension)
         {
-            using var originalImage = inputImage.ToSystemDrawingImage();
-            var width = inputImage.Width;
-            var height = inputImage.Height;
-            var aspectRatio = (double)inputImage.Width / inputImage.Height;
+            // Load the input image
+            byte[] imageBytes = Convert.FromBase64String(inputImage.ContentAsBase64String);
+            using var image = SixLabors.ImageSharp.Image.Load<Rgba32>(imageBytes);
+
+            // Calculate the new dimensions
+            int width = image.Width;
+            int height = image.Height;
+            double aspectRatio = (double)width / height;
 
             int newWidth, newHeight;
 
@@ -66,16 +70,16 @@ namespace StableDiffusionTools.ImageUtilities
                 newWidth = (int)(newHeight * aspectRatio);
             }
 
-            int x = (originalImage.Width - newWidth) / 2;
-            int y = (originalImage.Height - newHeight) / 2;
+            // Resize the image
+            image.Mutate(x => x.Resize(newWidth, newHeight));
 
-            using var resizedImage = new Bitmap(newWidth, newHeight);
-            using (var graphics = Graphics.FromImage(resizedImage))
-            {
-                graphics.DrawImage(originalImage, new Rectangle(0, 0, newWidth, newHeight), new Rectangle(x, y, newWidth, newHeight), GraphicsUnit.Pixel);
-            }
+            // Convert Image to base64
+            var outputStream = new MemoryStream();
+            await image.SaveAsPngAsync(outputStream);
 
-            return await resizedImage.ToImageDomainModel(inputImage);
+            var base64 = Convert.ToBase64String(outputStream.ToArray());
+
+            return new ImageDomainModel(base64, newWidth, newHeight);
         }
 
         private static async Task<ImageDomainModel> ToImageDomainModel(this Image image, ImageDomainModel originalImage)
