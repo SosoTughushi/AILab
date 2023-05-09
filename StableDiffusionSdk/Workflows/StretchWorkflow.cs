@@ -29,7 +29,7 @@ public class StretchWorkflow
 
         var rgbRegulator = new RgbRegulator();
 
-        for (var i = 0; i < 30; i++)
+        for (var i = 0; i < 70; i++)
         {
             try
             {

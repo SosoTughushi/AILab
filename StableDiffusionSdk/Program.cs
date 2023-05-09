@@ -25,7 +25,7 @@ var stableDiffusionUrl = configuration["StableDiffusionUrl"]!;
 var stableDiffusionApi = new StableDiffusionApi(stableDiffusionUrl);
 var ebSynth = new EbSynth(configuration["EbSynthLocation"]!);
 
-var eldenRingPrompter = new ComicDiffusionPrompter(gptApi, stableDiffusionApi,"something").Cached(10);
+var eldenRingPrompter = new ComicDiffusionPrompter(gptApi, stableDiffusionApi,"skulls, scary, human anatomy").Cached(10);
 
 //var videoToVideoWorkflow = new VideoToVideoWorkflow(stableDiffusionApi, comicDiffusionPrompter);
 //await videoToVideoWorkflow.Run(
