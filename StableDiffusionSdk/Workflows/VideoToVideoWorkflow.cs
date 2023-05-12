@@ -9,32 +9,27 @@ namespace StableDiffusionSdk.Workflows
     public class VideoToVideoWorkflow
     {
         private readonly StableDiffusionApi _stableDiffusionApi;
-        private readonly IPrompter _prompter;
+        private readonly Img2ImgRequestFactory _img2ImgRequestFactory;
 
-        public VideoToVideoWorkflow(StableDiffusionApi stableDiffusionApi, IPrompter prompter)
+        public VideoToVideoWorkflow(StableDiffusionApi stableDiffusionApi, Img2ImgRequestFactory img2ImgRequestFactory)
         {
             _stableDiffusionApi = stableDiffusionApi;
-            _prompter = prompter;
+            _img2ImgRequestFactory = img2ImgRequestFactory;
         }
 
-        public async Task Run(string inputVideoLocation, string outputFolder, int takeEveryXthFrame, int rezolution)
+        public async Task Run(string inputVideoLocation, int takeEveryXthFrame, int rezolution)
         {
-            var persistor = new ImagePersister(outputFolder);
-            foreach(var frame in VideoProcessor.DisassembleVideoToFrames(inputVideoLocation, takeEveryXthFrame))
+            var persistor = new ImagePersister(Path.Combine(Path.GetDirectoryName(inputVideoLocation)!,
+                Path.GetFileNameWithoutExtension(inputVideoLocation)));
+            foreach (var frame in VideoProcessor.DisassembleVideoToFrames(inputVideoLocation, takeEveryXthFrame))
             {
                 var image = await frame.ReadImage();
                 image = await image.Resize(rezolution, rezolution);
 
                 try
                 {
-                    var defused = await _stableDiffusionApi.ImageToImage(new Img2ImgRequest(
-                        InputImage: image!,
-                        Prompt: await _prompter.GetPrompt(image),
-                        NegativePrompt:"text, letters, comic characters, numbers",
-                        DenoisingStrength: 0.35,
-                        Seed: Seed.Random()
-
-                    ));
+                    var request = await _img2ImgRequestFactory(image);
+                    var defused = await _stableDiffusionApi.ImageToImage(request);
 
                     await persistor.Persist(defused);
                 }
@@ -44,6 +39,5 @@ namespace StableDiffusionSdk.Workflows
                 }
             }
         }
-        
     }
 }

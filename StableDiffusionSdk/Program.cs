@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Accord.Imaging;
+using Microsoft.Extensions.Configuration;
 using StableDiffusionSdk.Prompts;
 using StableDiffusionSdk.Workflows;
+using StableDiffusionTools.Domain;
 using StableDiffusionTools.ImageUtilities;
 using StableDiffusionTools.Integrations.EbSynth;
 using StableDiffusionTools.Integrations.OpenAi;
@@ -25,23 +27,39 @@ var stableDiffusionUrl = configuration["StableDiffusionUrl"]!;
 var stableDiffusionApi = new StableDiffusionApi(stableDiffusionUrl);
 var ebSynth = new EbSynth(configuration["EbSynthLocation"]!);
 
-var eldenRingPrompter = new ComicDiffusionPrompter(gptApi, stableDiffusionApi,"skulls, scary, human anatomy").Cached(10);
 
-//var videoToVideoWorkflow = new VideoToVideoWorkflow(stableDiffusionApi, comicDiffusionPrompter);
-//await videoToVideoWorkflow.Run(
-//    inputVideoLocation: @"D:\Stable Diffusion\Workspace\Tsnisi\Tunnel\Sauce.mp4",
-//    outputFolder: @"D:\Stable Diffusion\Workspace\Tsnisi\Tunnel\Comic",
-//    4);
+var comicDiffusionPrompter = new ComicDiffusionPrompter(gptApi, stableDiffusionApi, "").Cached(50);
+
+var eldenRingPrompter = new EldenRingPrompter(gptApi, stableDiffusionApi,
+        "light at the end of the tunnel, near death experience, positive, blurry and cloudy, dream alike, oil painting")
+    .Cached(50);
+
+async Task<Img2ImgRequest> CreateImg2ImgRequest(ImageDomainModel img) => new (
+        InputImage: img,
+        Prompt: await eldenRingPrompter!.GetPrompt(img),
+        DenoisingStrength: 0.3,
+        Seed.Random()
+    );
+
+var smoothZoomInWorkflow = new SmoothZoomInWorkflow(stableDiffusionApi, CreateImg2ImgRequest);
+
+//await smoothZoomInWorkflow.Run(@"C:\Users\TomTo\Downloads\drone_crash\6\00014.jpg",
+//    ImageResolution._1216,
+//    105,
+//    50,
+//    0.1,
+//    2);
+
+var videoToVideoWorkflow = new VideoToVideoWorkflow(stableDiffusionApi, CreateImg2ImgRequest);
+
+//await videoToVideoWorkflow.Run(@"C:\Users\TomTo\Downloads\drone_crash.mp4", 
+//    30, 
+//    ImageResolution._1408);
 
 
-var smoothZoomInWorkflow = new StretchWorkflow(stableDiffusionApi, eldenRingPrompter);
-foreach (var file in Directory.EnumerateFiles(@"D:\Stable Diffusion\Recursive\Bright"))
-{
-    await smoothZoomInWorkflow.Run(
-        file: file
-        
-        
-        );
+var warpWorkflow = new WarpInWorkflow(stableDiffusionApi, CreateImg2ImgRequest, resolution:ImageResolution._1024);
 
-    return;
-}
+await warpWorkflow.Run(@"C:\Users\TomTo\Downloads\drone_crash\6\00014.jpg",
+    new WarpDirection(-0.1, -0.3),
+    120
+    );

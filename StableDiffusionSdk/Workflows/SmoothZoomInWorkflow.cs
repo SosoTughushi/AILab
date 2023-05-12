@@ -7,18 +7,20 @@ using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
 namespace StableDiffusionSdk.Workflows;
 
+public delegate Task<Img2ImgRequest> Img2ImgRequestFactory(ImageDomainModel imageDomainModel);
+
 public class SmoothZoomInWorkflow
 {
     private readonly StableDiffusionApi _stableDiffusionApi;
-    private readonly IPrompter _prompter;
+    private readonly Img2ImgRequestFactory _img2ImgRequestFactory;
 
-    public SmoothZoomInWorkflow(StableDiffusionApi stableDiffusionApi, IPrompter prompter)
+    public SmoothZoomInWorkflow(StableDiffusionApi stableDiffusionApi, Img2ImgRequestFactory img2ImgRequestFactory)
     {
         _stableDiffusionApi = stableDiffusionApi;
-        _prompter = prompter;
+        _img2ImgRequestFactory = img2ImgRequestFactory;
     }
 
-    public async Task<Unit> Run(string path, int rezolution, double zoomPercent, double zoomInCount, double denoisingStrength, int middleStepCount)
+    public async Task<ImageDomainModel> Run(string path, int rezolution, double zoomPercent, double zoomInCount, double denoisingStrength, int middleStepCount)
     {
         var baseOutputFolder = Path.Combine(Path.GetDirectoryName(path)!,
             Path.GetFileNameWithoutExtension(path));
@@ -28,7 +30,7 @@ public class SmoothZoomInWorkflow
             
 
         //var zoomDirection = ZoomDirectionBuilder.Right(21.3).Bottom(12.5);
-        var zoomDirection = ZoomDirectionBuilder.Right(0).Bottom(0);
+        var zoomDirection = ZoomDirectionBuilder.Right(10).Bottom(10);
 
         var input = await path.ReadImage();
 
@@ -37,11 +39,11 @@ public class SmoothZoomInWorkflow
 
         input = await input.Resize(rezolution);
 
-        
+        ImageDomainModel lastResult;
         var regulator = new RgbRegulator();
         for (var recursionCount = 0; recursionCount < zoomInCount; recursionCount++)
         {
-            var gptPrompt = await _prompter.GetPrompt(input);
+            
             var seed = Seed.Random();
 
             var zoomDelta = zoomPercent - 100;
@@ -52,10 +54,21 @@ public class SmoothZoomInWorkflow
             for (var i = 1; i <= middleStepCount; i++)
             {
                 var zoomed = await input.Zoom(100 + zoomDeltaEachStep * i, zoomDirection);
-                var regulated = await regulator.Regulate(zoomed);
+
+                // var regulated = await regulator.Regulate(zoomed);
+                var regulated = zoomed;
 
                 var ds = Math.Round(denoisingStrengthStep * i, 3);
-                result = await Image2Image(regulated, gptPrompt, seed, jsonWriter, ds);
+
+                var request = await _img2ImgRequestFactory(regulated);
+                await jsonWriter.Write(request);
+
+                request = request with
+                {
+                    Seed = seed,
+                    DenoisingStrength = ds
+                };
+                result = await _stableDiffusionApi.ImageToImage(request);
 
                 await _persistor.Persist(result);
             }
@@ -63,22 +76,6 @@ public class SmoothZoomInWorkflow
             input = result;
         }
 
-        return new Unit();
-    }
-
-    private async Task<ImageDomainModel> Image2Image(ImageDomainModel input, string gptPrompt, Seed seed,
-        JsonWriter jsonWriter, double denoisingStrength)
-    {
-        var request = new Img2ImgRequest(
-            InputImage: input,
-            Prompt: gptPrompt,
-            DenoisingStrength: denoisingStrength,
-            NegativePrompt: "",
-            Seed: seed
-        );
-
-        await jsonWriter.Write(request);
-        var generated = await _stableDiffusionApi.ImageToImage(request);
-        return generated;
+        return input;
     }
 }

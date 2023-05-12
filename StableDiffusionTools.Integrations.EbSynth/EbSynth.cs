@@ -12,6 +12,19 @@ namespace StableDiffusionTools.Integrations.EbSynth
         {
             _ebsynthPath = ebsynthPath;
         }
+
+
+        public async Task<ImageDomainModel> TransferStyle(ImageDomainModel style, ImageDomainModel source,
+            ImageDomainModel target)
+        {
+            var persistor = new ImagePersister("eb-synth-temp");
+            var stylePath = await persistor.Persist(style);
+            var sourceGuidePath = await persistor.Persist(source);
+            var targetGuidePath = await persistor.Persist(target);
+
+            return await RunEbsynth(stylePath, sourceGuidePath, targetGuidePath);
+        }
+
         public async Task<ImageDomainModel> RunEbsynth(
             string stylePath,
             string sourceGuidePath,
