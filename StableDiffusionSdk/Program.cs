@@ -59,7 +59,17 @@ var videoToVideoWorkflow = new VideoToVideoWorkflow(stableDiffusionApi, CreateIm
 
 var warpWorkflow = new WarpInWorkflow(stableDiffusionApi, CreateImg2ImgRequest, resolution:ImageResolution._1024);
 
-await warpWorkflow.Run(@"C:\Users\TomTo\Downloads\drone_crash\6\00014.jpg",
-    new WarpDirection(-0.1, -0.3),
-    120
-    );
+//await warpWorkflow.Run(@"C:\Users\TomTo\Downloads\drone_crash\6\00014.jpg",
+//    new WarpDirection(-0.1, -0.3),
+//    120
+//    );
+
+var pdfToVideoWorkflow = new PdfToVideoWorkflow(stableDiffusionApi, gptApi, ImageResolution._1024);
+
+await foreach (var prompt in pdfToVideoWorkflow.GetPrompts(@"D:\Downloads\alice in the wonderland.pdf", 2))
+{
+    Console.WriteLine(prompt);
+    Console.WriteLine();
+}
+
+

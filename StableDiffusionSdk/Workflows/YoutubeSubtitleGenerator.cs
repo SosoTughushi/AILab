@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Accord.Imaging;
-using StableDiffusionSdk.Utilities.Videos;
+﻿using StableDiffusionSdk.Utilities.Videos;
+using StableDiffusionTools.Domain;
 using StableDiffusionTools.ImageUtilities;
 using StableDiffusionTools.Integrations.OpenAi;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;
@@ -13,22 +8,24 @@ namespace StableDiffusionSdk.Workflows
 {
     public class YoutubeSubtitleGenerator
     {
-        private static readonly string Template = "";
+        private static readonly string Template = "todo: fill me";
 
 
         private readonly GptApi _gptApi;
         private readonly StableDiffusionApi _stableDiffusionApi;
+        private readonly int _resolution;
 
-        public YoutubeSubtitleGenerator(GptApi gptApi, StableDiffusionApi stableDiffusionApi)
+        public YoutubeSubtitleGenerator(GptApi gptApi, StableDiffusionApi stableDiffusionApi, int resolution)
         {
             _gptApi = gptApi;
             _stableDiffusionApi = stableDiffusionApi;
+            _resolution = resolution;
         }
 
-        public async Task<string> Run(string videoFile, int everyXthSecond)
+        public async Task Run(string videoFile, int everyXthSecond)
         {
             var count = 0;
-            var frameDescription = new List<(string, int)>();
+            var interrogationResults = new List<(string, int)>();
             foreach (var image in VideoProcessor.DisassembleVideoToFrames(videoFile, 30 * everyXthSecond))
             {
                 var second = everyXthSecond * count;
@@ -36,13 +33,32 @@ namespace StableDiffusionSdk.Workflows
                 var interrogated =
                     await _stableDiffusionApi.Interrogate(new InterrogateRequest(await image.ReadImage(), InterrogationModel.Clip));
 
-                frameDescription.Add((interrogated, second));
+                interrogationResults.Add((interrogated, second));
 
                 count++;
             }
+            
+            var persistor = new ImagePersister(Path.Combine(Path.GetDirectoryName(videoFile)!,
+                Path.GetFileNameWithoutExtension(videoFile)));
+            
+            foreach (var interrogationResult in interrogationResults)
+            {
+                var prompt = await _gptApi.GenerateTextAsync(
+                    string.Format(
+                        Template,
+                        interrogationResult.Item1, 
+                        interrogationResult.Item2)
+                    );
 
-            var result = await _gptApi.GenerateTextAsync("");
-            return result;
+                var generated = await _stableDiffusionApi.TextToImage(new Text2ImgRequest(
+                    Prompt: prompt,
+                    Seed.Random(),
+                    Width: _resolution,
+                    Height: _resolution
+                ));
+
+                await persistor.Persist(generated);
+            }
         }
     }
 }

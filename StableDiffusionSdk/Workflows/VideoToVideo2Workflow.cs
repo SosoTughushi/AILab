@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using StableDiffusionSdk.Prompts;
+﻿using StableDiffusionSdk.Prompts;
 using StableDiffusionSdk.Utilities.Videos;
 using StableDiffusionTools.Domain;
 using StableDiffusionTools.ImageUtilities;
-using StableDiffusionTools.Integrations.EbSynth;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
 namespace StableDiffusionSdk.Workflows
@@ -16,13 +9,11 @@ namespace StableDiffusionSdk.Workflows
     public class VideoToVideo2Workflow
     {
         private readonly StableDiffusionApi _stableDiffusionApi;
-        private readonly EbSynth _ebSynth;
         private readonly IPrompter _prompter;
 
-        public VideoToVideo2Workflow(StableDiffusionApi stableDiffusionApi, EbSynth ebSynth, IPrompter prompter)
+        public VideoToVideo2Workflow(StableDiffusionApi stableDiffusionApi, IPrompter prompter)
         {
             _stableDiffusionApi = stableDiffusionApi;
-            _ebSynth = ebSynth;
             _prompter = prompter;
         }
 
