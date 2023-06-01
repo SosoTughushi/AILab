@@ -45,6 +45,45 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<DependentUpon>appsettings.json</DependentUpon>
 		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\SelfDestructive.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Depressive.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Selfish.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Hedonistic.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Gamer.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Futurist.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Survivor.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Reflective.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Mathematician.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Developer.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Musician.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Partner.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="HermansDialogicalSelfTheory\SelfDescriptions\Friend.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>

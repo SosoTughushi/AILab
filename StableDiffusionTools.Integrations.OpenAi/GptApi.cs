@@ -10,21 +10,9 @@ public class GptApi
 {
     private readonly IOpenAIService _openAiService;
 
-    public GptApi(string apiKey, string apiUrl = "https://api.openai.com")
+    public GptApi(OpenAIService openAiService)
     {
-        var options = new OpenAiOptions
-        {
-            ApiKey = apiKey,
-            BaseDomain = apiUrl
-        };
-
-        var httpClientHandler = new HttpClientHandler();
-        var httpClient = new HttpClient(httpClientHandler)
-        {
-            Timeout = TimeSpan.FromSeconds(200)
-        };
-
-        _openAiService = new OpenAIService(options, httpClient);
+        _openAiService = openAiService;
     }
 
     public async Task<string> GenerateTextAsync(string prompt)
