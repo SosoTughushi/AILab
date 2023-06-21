@@ -4,7 +4,7 @@ using StableDiffusionTools.Domain;
 using StableDiffusionTools.ImageUtilities;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
-namespace StableDiffusionSdk.Workflows
+namespace StableDiffusionSdk.Workflows.Image2Video
 {
     public static class HypnotizeWorkflow
     {

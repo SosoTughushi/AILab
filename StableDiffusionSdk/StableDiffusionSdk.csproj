@@ -17,7 +17,9 @@
   <ItemGroup>
     <PackageReference Include="Accord.Imaging" Version="3.8.2-alpha" />
     <PackageReference Include="Accord.Video.FFMPEG" Version="3.8.2-alpha" />
+    <PackageReference Include="Emgu.CV" Version="4.7.0.5276" />
     <PackageReference Include="FFmpeg.Net" Version="1.1.0" />
+    <PackageReference Include="FFMpegCore" Version="5.1.0" />
     <PackageReference Include="itext7" Version="8.0.0" />
     <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.0" />
     <PackageReference Include="MediaToolkit" Version="1.1.0.1" />

@@ -5,24 +5,23 @@ using StableDiffusionTools.ImageUtilities;
 using StableDiffusionTools.Integrations.EbSynth;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
-namespace StableDiffusionSdk.Workflows;
+namespace StableDiffusionSdk.Workflows.VideoToVideo;
 
 public class VideoToVideoViaEbSynth
 {
     private readonly StableDiffusionApi _stableDiffusionApi;
     private readonly EbSynth _ebSynth;
     private readonly IPrompter _prompter;
-    private readonly int _resolution;
 
-    public VideoToVideoViaEbSynth(StableDiffusionApi stableDiffusionApi,  EbSynth ebSynth, IPrompter prompter, int resolution)
+    public VideoToVideoViaEbSynth(StableDiffusionApi stableDiffusionApi, EbSynth ebSynth,
+        IPrompter prompter)
     {
         _stableDiffusionApi = stableDiffusionApi;
         _ebSynth = ebSynth;
         _prompter = prompter;
-        _resolution = resolution;
     }
 
-    public async Task Run(string inputVideoLocation, string outputFolder, int takeEveryXthFrame, int synthOnEachBatch)
+    public async Task Run(string inputVideoLocation, string outputFolder, int takeEveryXthFrame, int synthOnEachBatch, int resolution)
     {
         var persistor = new ImagePersister(outputFolder);
 
@@ -30,22 +29,22 @@ public class VideoToVideoViaEbSynth
 
         var frame = -1;
         List<string> buffer = new List<string>();
-        foreach(var frameLocation in VideoProcessor.DisassembleVideoToFrames(inputVideoLocation, takeEveryXthFrame))
+        foreach (var frameLocation in inputVideoLocation.DisassembleVideoToFrames(takeEveryXthFrame))
         {
             frame++;
-                
+
             buffer.Add(frameLocation);
-            if (frame % synthOnEachBatch != synthOnEachBatch -1)
+            if (frame % synthOnEachBatch != synthOnEachBatch - 1)
             {
                 continue;
             }
-                
+
             var batch = buffer.ToArray();
             buffer.Clear();
 
             var middlePath = batch[batch.Length / 2];
             var middle = await middlePath.ReadImage();
-            var middleGuideImage = await middle.Resize(_resolution);
+            var middleGuideImage = await middle.Resize(resolution);
             var middleDefused = await _stableDiffusionApi.ImageToImage(new Img2ImgRequest(
                 InputImage: middleGuideImage!,
                 Prompt: await _prompter.GetPrompt(middleGuideImage),
@@ -55,7 +54,7 @@ public class VideoToVideoViaEbSynth
 
             var stylePath = await persistStyle.Persist(middleDefused);
             var middleGuidePath = await persistStyle.Persist(middleGuideImage);
-                
+
 
             foreach (var path in batch)
             {
@@ -64,8 +63,9 @@ public class VideoToVideoViaEbSynth
                     await persistor.Persist(middleDefused);
                     continue;
                 }
+
                 var image = await path.ReadImage();
-                var imageDownscaled = await image.Resize(_resolution);
+                var imageDownscaled = await image.Resize(resolution);
 
                 var downscaledPath = await persistStyle.Persist(imageDownscaled);
 

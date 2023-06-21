@@ -10,7 +10,7 @@ public class SelfOrchestrator
     public SelfOrchestrator(GptApi gptApi)
     {
         _selfPositions = Directory.GetFiles(@"D:\Stable Diffusion\Projects\StableDiffusionTools\StableDiffusionSdk\HermansDialogicalSelfTheory\SelfDescriptions")
-            .Select(fileName => new GptSelfPosition(gptApi, fileName, Path.GetFileNameWithoutExtension(fileName)))
+            .Select(fileName => new GptSelfPosition(gptApi, fileName, Path.GetFileNameWithoutExtension(fileName), 10))
             .ToList();
     }
 

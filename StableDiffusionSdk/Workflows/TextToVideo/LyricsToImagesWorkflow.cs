@@ -4,7 +4,7 @@ using StableDiffusionTools.Domain;
 using StableDiffusionTools.ImageUtilities;
 using StableDiffusionTools.Integrations.OpenAi;
 
-namespace StableDiffusionSdk.Workflows;
+namespace StableDiffusionSdk.Workflows.TextToVideo;
 
 public class LyricsToImagesWorkflow
 {

@@ -5,7 +5,7 @@ using StableDiffusionTools.Domain;
 using StableDiffusionTools.ImageUtilities;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
-namespace StableDiffusionSdk.Workflows;
+namespace StableDiffusionSdk.Workflows.Image2Video;
 
 public delegate Task<Img2ImgRequest> Img2ImgRequestFactory(ImageDomainModel imageDomainModel);
 
@@ -27,7 +27,7 @@ public class SmoothZoomInWorkflow
         var _persistor = new ImagePersister(baseOutputFolder);
         var jsonWriter = new JsonWriter(_persistor.OutputFolder);
 
-            
+
 
         //var zoomDirection = ZoomDirectionBuilder.Right(21.3).Bottom(12.5);
         var zoomDirection = ZoomDirectionBuilder.Right(10).Bottom(10);
@@ -43,7 +43,7 @@ public class SmoothZoomInWorkflow
         var regulator = new RgbRegulator();
         for (var recursionCount = 0; recursionCount < zoomInCount; recursionCount++)
         {
-            
+
             var seed = Seed.Random();
 
             var zoomDelta = zoomPercent - 100;

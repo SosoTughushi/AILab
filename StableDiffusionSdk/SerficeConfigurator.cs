@@ -11,6 +11,8 @@ using StableDiffusionSdk.Workflows;
 using StableDiffusionTools.Integrations.EbSynth;
 using StableDiffusionTools.Integrations.OpenAi;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;
+using StableDiffusionSdk.Workflows.Image2Video;
+using StableDiffusionSdk.Workflows.VideoToVideo;
 
 namespace StableDiffusionSdk
 {
@@ -27,22 +29,27 @@ namespace StableDiffusionSdk
                 .AddEnvironmentVariables()
                 .Build());
 
+            
+            serviceCollection.AddSingleton(provider =>
+                new StableDiffusionApi(provider.GetRequiredService<IConfiguration>()["StableDiffusionUrl"]!));
+
 
             serviceCollection.AddOpenAiServices();
 
             serviceCollection.AddSingleton<EbSynth>(provider =>
-                new EbSynth(provider.GetRequiredService<IConfiguration>()["EbSynthLocation"]));
+                new EbSynth(provider.GetRequiredService<IConfiguration>()["EbSynthLocation"]!));
 
             serviceCollection.AddSingleton<ComicDiffusionPrompter>();
             serviceCollection.AddSingleton<EldenRingPrompter>();
 
-            serviceCollection.AddSingleton<SmoothZoomInWorkflow>();
-            serviceCollection.AddSingleton<VideoToVideoWorkflow>();
-            serviceCollection.AddSingleton<WarpInWorkflow>();
-            serviceCollection.AddSingleton<PdfToVideoWorkflow>();
+            serviceCollection.AddTransient<SmoothZoomInWorkflow>();
+            serviceCollection.AddTransient<VideoToVideoWorkflow>();
+            serviceCollection.AddTransient<WarpInWorkflow>();
+            serviceCollection.AddTransient<PdfToVideoWorkflow>();
+            serviceCollection.AddTransient<ConsistentStyleTransfgerWorkflow>();
 
 
-            serviceCollection.AddSingleton<SelfOrchestrator>();
+            serviceCollection.AddTransient<SelfOrchestrator>();
 
             return serviceCollection.BuildServiceProvider();
 

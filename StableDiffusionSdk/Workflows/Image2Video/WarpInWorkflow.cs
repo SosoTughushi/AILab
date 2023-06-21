@@ -5,29 +5,25 @@ using StableDiffusionTools.Domain;
 using StableDiffusionTools.ImageUtilities;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
-namespace StableDiffusionSdk.Workflows;
+namespace StableDiffusionSdk.Workflows.Image2Video;
 
 public class WarpInWorkflow
 {
     private readonly StableDiffusionApi _stableDiffusionApi;
-    private readonly Img2ImgRequestFactory _img2ImgRequestFactory;
-    private readonly int _resolution;
 
-    public WarpInWorkflow(StableDiffusionApi stableDiffusionApi, Img2ImgRequestFactory img2ImgRequestFactory, int resolution)
+    public WarpInWorkflow(StableDiffusionApi stableDiffusionApi)
     {
         _stableDiffusionApi = stableDiffusionApi;
-        _img2ImgRequestFactory = img2ImgRequestFactory;
-        _resolution = resolution;
     }
 
-    public async Task<ImageDomainModel> Run(string file, WarpDirection direction, double zoomPercent)
+    public async Task<ImageDomainModel> Run(string file, int resolution, WarpDirection direction, double zoomPercent, Img2ImgRequestFactory img2ImgRequestFactory)
     {
         var persister =
             new ImagePersister(Path.Combine(Path.GetDirectoryName(file)!,
                 Path.GetFileNameWithoutExtension(file)));
 
         var input = await file.ReadImage();
-        input = await input.Resize(_resolution);
+        input = await input.Resize(resolution);
 
         var rgbRegulator = new RgbRegulator();
 
@@ -39,11 +35,10 @@ public class WarpInWorkflow
 
             var zoomed = await adjusted.Zoom(zoomPercent, new ZoomInDirection(0, 0));
 
-            var request = await _img2ImgRequestFactory(zoomed);
+            var request = await img2ImgRequestFactory(zoomed);
 
             request = request with
             {
-                DenoisingStrength = 0.25,
                 Seed = Seed.Random()
             };
 

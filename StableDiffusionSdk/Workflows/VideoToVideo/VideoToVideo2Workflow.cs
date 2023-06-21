@@ -4,7 +4,7 @@ using StableDiffusionTools.Domain;
 using StableDiffusionTools.ImageUtilities;
 using StableDiffusionTools.Integrations.StableDiffusionWebUi;
 
-namespace StableDiffusionSdk.Workflows
+namespace StableDiffusionSdk.Workflows.VideoToVideo
 {
     public class VideoToVideo2Workflow
     {
@@ -25,7 +25,7 @@ namespace StableDiffusionSdk.Workflows
                 Path.GetFileNameWithoutExtension(videoPath)));
             ImageDomainModel? previousFrameReal = null;
             ImageDomainModel? previousFrameDefused = null;
-            foreach (var file in VideoProcessor.DisassembleVideoToFrames(videoPath, frameXth))
+            foreach (var file in videoPath.DisassembleVideoToFrames(frameXth))
             {
                 var currentFrame = await file.ReadImage();
                 currentFrame = await currentFrame.Resize(size);
